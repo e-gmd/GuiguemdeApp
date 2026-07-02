@@ -22,3 +22,5 @@ public static class MauiProgram
         return builder.Build();
     }
 }
+
+//emma fait un test git
