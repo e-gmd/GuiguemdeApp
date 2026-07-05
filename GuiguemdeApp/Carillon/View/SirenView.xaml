@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GuiguemdeApp.Carillon.View.SirenView">
+    <ContentPage.Content>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+
+            <Label
+                Text="Sirène"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label
+                Text="Nouvelle sirène"
+                Style="{StaticResource SubHeadline}"
+                SemanticProperties.HeadingLevel="Level2"/>
+            <Entry Placeholder="Nom"
+                   Text="{Binding Name}" />
+
+            <Entry Placeholder="Heure"
+                   Text="{Binding Date}" />
+
+            <Button Text="Valider"
+                    Command="{Binding AddAlarmCommand}" />
+            
+            <ScrollView>
+                <CollectionView ItemsSource="{Binding Alarms}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Text="{Binding Name}" Grid.Column="0" />
+                                <Label Text="{Binding Date}" Grid.Column="1" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+
+
+        </VerticalStackLayout>
+        
+        
+    </ContentPage.Content>
+</ContentPage>
