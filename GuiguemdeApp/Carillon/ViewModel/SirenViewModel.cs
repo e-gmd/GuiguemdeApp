@@ -48,5 +48,6 @@ internal class SirenViewModel : BaseViewModel
         Alarm alarm = new Alarm(alarmDate, Name);
 
         _alarmService.AddAlarm(alarm);
+        _alarmScheduler.Schedule(alarm);
     }
 }

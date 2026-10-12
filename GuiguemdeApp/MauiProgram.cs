@@ -22,6 +22,3 @@ public static class MauiProgram
         return builder.Build();
     }
 }
-/*TEST ALEXE
-
- coucou*/
