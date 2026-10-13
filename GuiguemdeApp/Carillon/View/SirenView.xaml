@@ -2,11 +2,13 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GuiguemdeApp.Carillon.View.SirenView">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="GuiguemdeApp.Carillon.View.SirenView"
+             x:Name="Page">
 
-    <Grid Padding="30,10"
-          RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
-          RowSpacing="15">
+       <Grid Padding="30,10"
+             RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
+             RowSpacing="15">
 
         <Label Grid.Row="0"
                Text="Sirène"
@@ -22,9 +24,9 @@
                Placeholder="Nom"
                Text="{Binding Name}" />
 
-        <Entry Grid.Row="3"
-               Placeholder="Heure"
-               Text="{Binding Date}" />
+        <TimePicker Grid.Row="3"
+                    Time="{Binding Time}"
+                    Format="HH:mm" />
 
         <Button Grid.Row="4"
                 Text="Valider"
@@ -43,13 +45,23 @@
                                         <Label Text="{Binding Name}"
                                                FontAttributes="Bold" />
 
-                                        <Label Text="{Binding Date}"
-                                               FontSize="Small" />
+                                        <Label Text="{Binding Time, StringFormat='{}{0:HH:mm:ss}'}" />
                                  </VerticalStackLayout>
 
+                                 
                                  <Switch Grid.Column="1"
+                                         VerticalOptions="Center"
                                          IsToggled="{Binding Actif, Mode=TwoWay}"
-                                         VerticalOptions="Center" />
+                                         x:Name="AlarmSwitch">
+                                        <Switch.Behaviors>
+                                               <toolkit:EventToCommandBehavior
+                                                      EventName="Toggled"
+                                                      BindingContext="{Binding BindingContext, Source={x:Reference AlarmSwitch}}"
+                                                      Command="{Binding BindingContext.ToggleAlarmCommand, Source={x:Reference Page}}"
+                                                      CommandParameter="{Binding .}" />
+                                        </Switch.Behaviors>
+                                 </Switch>
+
 
                           </Grid>
                    </DataTemplate>

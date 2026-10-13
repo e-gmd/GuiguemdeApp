@@ -13,13 +13,14 @@ internal class SirenViewModel : BaseViewModel
     public ObservableCollection<Alarm> Alarms => _alarmService.Alarms; //pour l'affichage dans xaml
     public ICommand AddAlarmCommand { get; set; }
     public ICommand CancelAlarmCommand { get; set; }
+    public ICommand ToggleAlarmCommand { get; }
 
     public SirenViewModel() {
         _alarmService = new AlarmService();
         _alarmScheduler = new AlarmScheduler();
         AddAlarmCommand = new Command(AddAlarm);
         CancelAlarmCommand = new Command<Alarm>(CancelAlarm);
-        
+        ToggleAlarmCommand = new Command<Alarm>(ToggleAlarm);
     }
 
     private Alarm selectedAlarm;// attribut viewmodel (mais de type alarm)
@@ -30,25 +31,24 @@ internal class SirenViewModel : BaseViewModel
         set { selectedAlarm = value; OnPropertyChanged(); }
     }
     
-    private string name;
+    private string name = "Alarme";
     public string Name
     {
         get => name;
         set { name = value; OnPropertyChanged(); }
     }
+    
+    
+    private TimeSpan time = DateTime.Now.TimeOfDay;
 
-    private string date;
-    public string Date
+    public TimeSpan Time
     {
-        get => date;
-        set { date = value; OnPropertyChanged(); }
+        get => time;
+        set { time = value; OnPropertyChanged(); }
     }
     private void AddAlarm()
     {
-        if (!DateTime.TryParse(Date, out DateTime alarmDate))
-            return;
-        
-        Alarm alarm = new Alarm(alarmDate, Name);
+        Alarm alarm = new Alarm(Time, Name);
 
         _alarmService.AddAlarm(alarm);
         _alarmScheduler.Schedule(alarm);
@@ -58,4 +58,22 @@ internal class SirenViewModel : BaseViewModel
     {
         _alarmScheduler.Cancel(alarm);
     }
+
+    private void ActiveAlarm(Alarm alarm)
+    {
+        _alarmScheduler.Schedule(alarm);
+    }
+    
+    private void ToggleAlarm(Alarm alarm)
+    {
+        if (alarm == null)
+            return;
+        
+        if(alarm.Actif){
+            ActiveAlarm(alarm);}
+        else
+            CancelAlarm(alarm);
+    }
+    
+    
 }

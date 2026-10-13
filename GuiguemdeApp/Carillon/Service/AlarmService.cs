@@ -12,12 +12,13 @@ internal class AlarmService
     {
         Alarms = new ObservableCollection<Alarm>();
         
-        DateTime date1 = new DateTime(2010, 1, 1, 8, 0, 15);
-        DateTime date2 = new DateTime(2010, 8, 18, 13, 30, 30);
-        DateTime date3 = new DateTime(2026, 10, 17, 13, 00, 00);
-        Alarms.Add(new Alarm(date1, "alarm1"));
-        Alarms.Add(new Alarm(date2, "alarm2"));
-        Alarms.Add(new Alarm(date3, "RÉVOLUTION"));
+        TimeSpan time1 = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+        TimeSpan time2 = new TimeSpan(18, 17, 00);
+        TimeSpan time3 = new TimeSpan(12, 17,00);
+
+        Alarms.Add(new Alarm(time1, "maintenant"));
+        Alarms.Add(new Alarm(time2, "Bus pour aller danser le jerk"));
+        Alarms.Add(new Alarm(time3, "Teuf maison de retraite"));
         
 
     }

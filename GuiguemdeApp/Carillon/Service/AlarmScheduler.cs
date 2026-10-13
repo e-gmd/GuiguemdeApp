@@ -10,16 +10,25 @@ internal class AlarmScheduler
     {
         _ = WaitAndTriggerAsync(alarm);  //_= on previent qu'on s'en fiche du resultat
     }
+    
+    private DateTime GetAlarmDate(TimeSpan time)
+    {
+        DateTime now = DateTime.Now;
+
+        DateTime alarmDate = now.Date.Add(time);
+
+        if (alarmDate <= now)
+        {
+            alarmDate = alarmDate.AddDays(1);
+        }
+
+        return alarmDate;
+    }
 
     private async Task WaitAndTriggerAsync(Alarm alarm)
     {
-        TimeSpan delay = alarm.Date - DateTime.Now;
-
-        if (delay <= TimeSpan.Zero)
-        {
-            Debug.WriteLine($"L'alarme {alarm.Name} est dans le passé.");
-            return;
-        }
+        DateTime alarmDate = GetAlarmDate(alarm.Time);
+        TimeSpan delay = alarmDate - DateTime.Now;
 
         Debug.WriteLine($"Alarme {alarm.Name} programmée dans {delay}.");
         alarm.Actif = true;
@@ -30,6 +39,7 @@ internal class AlarmScheduler
 
         Debug.WriteLine($"DÉCLENCHEMENT : {alarm.Name} à {DateTime.Now}.");
         alarm.Actif = false;
+        _scheduledAlarms.Remove(alarm.Id);
     }
 
     public void Cancel(Alarm alarm)
@@ -38,6 +48,7 @@ internal class AlarmScheduler
         {
             cts.Cancel();
             alarm.Actif = false;
+            _scheduledAlarms.Remove(alarm.Id);
             Debug.WriteLine($"DÉSACTIVATION : {alarm.Name} à {DateTime.Now}.");
         }
     }

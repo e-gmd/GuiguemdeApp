@@ -2,15 +2,15 @@ using System.ComponentModel;
 
 namespace GuiguemdeApp.Carillon.Model;
 
-internal class Alarm(DateTime date, string? name) : INotifyPropertyChanged
+internal class Alarm(TimeSpan time, string? name) : INotifyPropertyChanged
 {
-    public DateTime Date { get; set; } = date; //les =date c'est pour les constructors
+    public TimeSpan Time { get; set; } = time; //les =date c'est pour les constructors
     public string? Name { get; set; } = name;
     
     private static int _nextId = 0;
     public int Id { get; } = Interlocked.Increment(ref _nextId);
     
-    private bool _actif;
+    private bool _actif { get; set; }= true;
     public bool Actif {
         get => _actif;
         set {
