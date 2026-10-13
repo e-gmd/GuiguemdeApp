@@ -28,18 +28,31 @@
                     Time="{Binding Time}"
                     Format="HH:mm" />
 
-        <Button Grid.Row="4"
-                Text="Valider"
-                Command="{Binding AddAlarmCommand}" />
+        <Grid Grid.Row="4">
+               <Grid Padding="20,10"
+                  ColumnDefinitions="*,*"   
+                     ColumnSpacing="20"
+                     >
+                      <Button Grid.Column="0"
+                              Text="Valider"
+                              Command="{Binding AddAlarmCommand}" 
+                      />
+        
+                      <Button Grid.Column="1"
+                              Text="Supprimer"
+                              Command="{Binding DeleteAlarmCommand}" 
+                      />
+               </Grid>
+        </Grid>
 
         <CollectionView Grid.Row="5"
-                        ItemsSource="{Binding Alarms}">
+                        ItemsSource="{Binding Alarms}"
+                        SelectedItem="{Binding SelectedAlarm, Mode=TwoWay}"
+                        SelectionMode="Single">
             <CollectionView.ItemTemplate>
                
                    <DataTemplate>
-                          <Grid ColumnDefinitions="*,Auto"
-                                Padding="0,5">
-
+                          <Grid ColumnDefinitions="*,Auto" Padding="0,5">
                                  <VerticalStackLayout Grid.Column="0"
                                                       Spacing="2">
                                         <Label Text="{Binding Name}"
@@ -51,7 +64,7 @@
                                  
                                  <Switch Grid.Column="1"
                                          VerticalOptions="Center"
-                                         IsToggled="{Binding Actif, Mode=TwoWay}"
+                                         IsToggled="{Binding IsActive, Mode=TwoWay}"
                                          x:Name="AlarmSwitch">
                                         <Switch.Behaviors>
                                                <toolkit:EventToCommandBehavior
@@ -61,7 +74,6 @@
                                                       CommandParameter="{Binding .}" />
                                         </Switch.Behaviors>
                                  </Switch>
-
 
                           </Grid>
                    </DataTemplate>

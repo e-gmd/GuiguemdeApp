@@ -10,14 +10,14 @@ internal class Alarm(TimeSpan time, string? name) : INotifyPropertyChanged
     private static int _nextId = 0;
     public int Id { get; } = Interlocked.Increment(ref _nextId);
     
-    private bool _actif { get; set; }= true;
-    public bool Actif {
-        get => _actif;
+    private bool _isActive { get; set; }= true;
+    public bool IsActive {
+        get => _isActive;
         set {
-            if (_actif == value)
+            if (_isActive == value)
                 return;
 
-            _actif = value;
+            _isActive = value;
             OnPropertyChanged();
         }
     }

@@ -31,14 +31,14 @@ internal class AlarmScheduler
         TimeSpan delay = alarmDate - DateTime.Now;
 
         Debug.WriteLine($"Alarme {alarm.Name} programmée dans {delay}.");
-        alarm.Actif = true;
+        alarm.IsActive = true;
         
         var cts = new CancellationTokenSource();
         _scheduledAlarms.Add(alarm.Id, cts);
         await Task.Delay(delay, cts.Token);
 
         Debug.WriteLine($"DÉCLENCHEMENT : {alarm.Name} à {DateTime.Now}.");
-        alarm.Actif = false;
+        alarm.IsActive = false;
         _scheduledAlarms.Remove(alarm.Id);
     }
 
@@ -47,7 +47,6 @@ internal class AlarmScheduler
         if (_scheduledAlarms.TryGetValue(alarm.Id, out var cts))
         {
             cts.Cancel();
-            alarm.Actif = false;
             _scheduledAlarms.Remove(alarm.Id);
             Debug.WriteLine($"DÉSACTIVATION : {alarm.Name} à {DateTime.Now}.");
         }
