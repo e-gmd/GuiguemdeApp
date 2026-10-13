@@ -4,7 +4,8 @@ using GuiguemdeApp.Carillon.Model;
 namespace GuiguemdeApp.Carillon.Service;
 
 internal class AlarmScheduler
-{
+{ 
+    private readonly Dictionary<int, CancellationTokenSource> _scheduledAlarms = new();
     public void Schedule(Alarm alarm)
     {
         _ = WaitAndTriggerAsync(alarm);  //_= on previent qu'on s'en fiche du resultat
@@ -20,14 +21,25 @@ internal class AlarmScheduler
             return;
         }
 
-        Debug.WriteLine(
-            $"Alarme {alarm.Name} programmée dans {delay}."
-        );
+        Debug.WriteLine($"Alarme {alarm.Name} programmée dans {delay}.");
+        alarm.Actif = true;
+        
+        var cts = new CancellationTokenSource();
+        _scheduledAlarms.Add(alarm.Id, cts);
+        await Task.Delay(delay, cts.Token);
 
-        await Task.Delay(delay);
-
-        Debug.WriteLine(
-            $"DÉCLENCHEMENT : {alarm.Name} à {DateTime.Now}."
-        );
+        Debug.WriteLine($"DÉCLENCHEMENT : {alarm.Name} à {DateTime.Now}.");
+        alarm.Actif = false;
     }
+
+    public void Cancel(Alarm alarm)
+    {
+        if (_scheduledAlarms.TryGetValue(alarm.Id, out var cts))
+        {
+            cts.Cancel();
+            alarm.Actif = false;
+            Debug.WriteLine($"DÉSACTIVATION : {alarm.Name} à {DateTime.Now}.");
+        }
+    }
+    
 }

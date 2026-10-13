@@ -33,15 +33,27 @@
         <CollectionView Grid.Row="5"
                         ItemsSource="{Binding Alarms}">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="*,*"
-                          Padding="0,5">
-                        <Label Text="{Binding Name}"
-                               Grid.Column="0" />
-                        <Label Text="{Binding Date}"
-                               Grid.Column="1" />
-                    </Grid>
-                </DataTemplate>
+               
+                   <DataTemplate>
+                          <Grid ColumnDefinitions="*,Auto"
+                                Padding="0,5">
+
+                                 <VerticalStackLayout Grid.Column="0"
+                                                      Spacing="2">
+                                        <Label Text="{Binding Name}"
+                                               FontAttributes="Bold" />
+
+                                        <Label Text="{Binding Date}"
+                                               FontSize="Small" />
+                                 </VerticalStackLayout>
+
+                                 <Switch Grid.Column="1"
+                                         IsToggled="{Binding Actif, Mode=TwoWay}"
+                                         VerticalOptions="Center" />
+
+                          </Grid>
+                   </DataTemplate>
+
             </CollectionView.ItemTemplate>
         </CollectionView>
 

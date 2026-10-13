@@ -12,11 +12,14 @@ internal class SirenViewModel : BaseViewModel
     private readonly AlarmScheduler _alarmScheduler;
     public ObservableCollection<Alarm> Alarms => _alarmService.Alarms; //pour l'affichage dans xaml
     public ICommand AddAlarmCommand { get; set; }
+    public ICommand CancelAlarmCommand { get; set; }
 
     public SirenViewModel() {
         _alarmService = new AlarmService();
         _alarmScheduler = new AlarmScheduler();
         AddAlarmCommand = new Command(AddAlarm);
+        CancelAlarmCommand = new Command<Alarm>(CancelAlarm);
+        
     }
 
     private Alarm selectedAlarm;// attribut viewmodel (mais de type alarm)
@@ -49,5 +52,10 @@ internal class SirenViewModel : BaseViewModel
 
         _alarmService.AddAlarm(alarm);
         _alarmScheduler.Schedule(alarm);
+    }
+
+    private void CancelAlarm(Alarm alarm)
+    {
+        _alarmScheduler.Cancel(alarm);
     }
 }
