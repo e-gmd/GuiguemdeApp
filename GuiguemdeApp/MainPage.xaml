@@ -26,7 +26,7 @@
             <Button
                 Text="Carillon" 
                 SemanticProperties.Hint="Go to Carillon Api"
-                Clicked="Siren_Button_Clicked"
+                Clicked="Carillon_Button_Clicked"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>

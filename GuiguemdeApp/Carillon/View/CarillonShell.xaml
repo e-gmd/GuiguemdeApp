@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="GuiguemdeApp.Carillon.View.CarillonShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GuiguemdeApp.Carillon.View"
+    Shell.FlyoutBehavior="Disabled"
+    Title="GuiguemdeApp">
+    
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="Auto,*">
+            <Button
+                Text="HOME"
+                Clicked="OnHomeClicked"
+                Grid.Column="0" />
+
+            <Label
+                Text="Carillon"
+                Grid.Column="1"
+                VerticalOptions="Center" />
+        </Grid>
+    </Shell.TitleView>
+    
+    <TabBar>
+        <ShellContent
+            Title="Siren"
+            ContentTemplate="{DataTemplate local:SirenView}"
+            Route="SirenView" />
+    
+        <ShellContent
+            Title="Timer"
+            ContentTemplate="{DataTemplate local:TimerView}"
+            Route="TimerView" />
+    </TabBar>
+    
+
+</Shell>
