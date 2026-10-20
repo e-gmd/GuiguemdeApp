@@ -2,9 +2,9 @@ using System.ComponentModel;
 
 namespace GuiguemdeApp.Carillon.Model;
 
-internal class Alarm(TimeSpan time, string? name) : INotifyPropertyChanged
+public class Alarm(DateTime date, string? name) : INotifyPropertyChanged
 {
-    public TimeSpan Time { get; set; } = time; //les =date c'est pour les constructors
+    public DateTime Date { get; set; } = date; //les =date c'est pour les constructors
     public string? Name { get; set; } = name;
     
     private static int _nextId = 0;

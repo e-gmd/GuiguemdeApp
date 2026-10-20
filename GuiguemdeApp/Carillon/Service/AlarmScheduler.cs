@@ -4,7 +4,7 @@ using Plugin.Maui.Audio;
 
 namespace GuiguemdeApp.Carillon.Service;
 
-internal class AlarmScheduler
+public class AlarmScheduler
 { 
     private readonly Dictionary<int, CancellationTokenSource> _scheduledAlarms = new();
     private readonly IAudioManager _audioManager;
@@ -20,24 +20,10 @@ internal class AlarmScheduler
         _ = WaitAndTriggerAsync(alarm);  //_= on previent qu'on s'en fiche du resultat
     }
     
-    private DateTime GetAlarmDate(TimeSpan time)
-    {
-        DateTime now = DateTime.Now;
-
-        DateTime alarmDate = now.Date.Add(time);
-
-        if (alarmDate <= now)
-        {
-            alarmDate = alarmDate.AddDays(1);
-        }
-
-        return alarmDate;
-    }
 
     private async Task WaitAndTriggerAsync(Alarm alarm)
     {
-        DateTime alarmDate = GetAlarmDate(alarm.Time);
-        TimeSpan delay = alarmDate - DateTime.Now;
+        TimeSpan delay = alarm.Date - DateTime.Now;
 
         Debug.WriteLine($"Alarme {alarm.Name} programmée dans {delay}.");
         alarm.IsActive = true;

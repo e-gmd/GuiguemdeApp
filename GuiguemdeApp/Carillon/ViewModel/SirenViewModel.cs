@@ -6,18 +6,18 @@ using GuiguemdeApp.Carillon.Service;
 
 namespace GuiguemdeApp.Carillon.ViewModel;
 
-internal class SirenViewModel : BaseViewModel
+public class SirenViewModel : BaseViewModel
 {
-    public AlarmService _alarmService { get; set; }
+    private readonly AlarmService _alarmService;
     private readonly AlarmScheduler _alarmScheduler;
     public ObservableCollection<Alarm> Alarms => _alarmService.Alarms; //pour l'affichage dans xaml
     public ICommand AddAlarmCommand { get; set; }
     public ICommand ToggleAlarmCommand { get; }
     public ICommand DeleteAlarmCommand { get; }
 
-    public SirenViewModel() {
-        _alarmService = new AlarmService();
-        _alarmScheduler = new AlarmScheduler();
+    public SirenViewModel(AlarmService alarmService, AlarmScheduler alarmScheduler) {
+        _alarmService = alarmService;
+        _alarmScheduler = alarmScheduler;
         AddAlarmCommand = new Command(AddAlarm);
         ToggleAlarmCommand = new Command<Alarm>(ToggleAlarm);
         DeleteAlarmCommand = new Command(DeleteAlarm);
@@ -46,9 +46,23 @@ internal class SirenViewModel : BaseViewModel
         get => time;
         set { time = value; OnPropertyChanged(); }
     }
+    
+    private DateTime GetAlarmDate(TimeSpan time)
+    {
+        DateTime now = DateTime.Now;
+
+        DateTime alarmDate = now.Date.Add(time);
+
+        if (alarmDate <= now)
+        {
+            alarmDate = alarmDate.AddDays(1);
+        }
+
+        return alarmDate;
+    }
     private void AddAlarm()
     {
-        Alarm alarm = new Alarm(Time, Name);
+        Alarm alarm = new Alarm(GetAlarmDate(Time), Name);
 
         _alarmService.AddAlarm(alarm);
         _alarmScheduler.Schedule(alarm);

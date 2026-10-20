@@ -4,10 +4,10 @@ namespace GuiguemdeApp.Carillon.View;
 
 public partial class SirenView : ContentPage
 {
-    public SirenView()
+    public SirenView(SirenViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext = new SirenViewModel();
+        BindingContext = viewModel;
 
     }
 }
