@@ -9,15 +9,15 @@
     
     <Shell.TitleView>
         <Grid ColumnDefinitions="Auto,*">
-            <Button
+            <Button Padding="20,5"
                 Text="HOME"
                 Clicked="OnHomeClicked"
                 Grid.Column="0" />
 
-            <Label
-                Text="Carillon"
-                Grid.Column="1"
-                VerticalOptions="Center" />
+            <Label Padding="20,5"
+                   Text="Carillon"
+                   Grid.Column="1"
+                   VerticalOptions="Center" />
         </Grid>
     </Shell.TitleView>
     
