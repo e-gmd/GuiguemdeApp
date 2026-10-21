@@ -21,6 +21,7 @@ public class SirenViewModel : BaseViewModel
         AddAlarmCommand = new Command(AddAlarm);
         ToggleAlarmCommand = new Command<Alarm>(ToggleAlarm);
         DeleteAlarmCommand = new Command(DeleteAlarm);
+        ScheduleAll();
     }
 
     private Alarm selectedAlarm;// attribut viewmodel (mais de type alarm)
@@ -64,8 +65,17 @@ public class SirenViewModel : BaseViewModel
     {
         Alarm alarm = new Alarm(GetAlarmDate(Time), Name);
 
-        _alarmService.AddAlarm(alarm);
+        _= _alarmService.AddAlarm(alarm);
         _alarmScheduler.Schedule(alarm);
+    }
+
+    private void ScheduleAll()
+    {
+        foreach (Alarm alarm in _alarmService.Alarms)
+        {
+            if (alarm.IsActive)
+                _alarmScheduler.Schedule(alarm);
+        }
     }
     
     private void ToggleAlarm(Alarm alarm)
@@ -85,7 +95,7 @@ public class SirenViewModel : BaseViewModel
             return;
         SelectedAlarm.IsActive = false;                 //parce que Toggle s'affole sinon
         _alarmScheduler.Cancel(SelectedAlarm);
-        _alarmService.DeleteAlarm(SelectedAlarm);
+        _= _alarmService.DeleteAlarm(SelectedAlarm);
         
 
         SelectedAlarm = null;
