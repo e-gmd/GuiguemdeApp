@@ -5,22 +5,39 @@ using Plugin.Maui.Audio;
 namespace GuiguemdeApp.Carillon.Service;
 
 public class AlarmScheduler
-{ 
+{   
+    /// <summary>
+    /// Dictionary of the schedules alarms indexed by Id
+    /// </summary>
     private readonly Dictionary<int, CancellationTokenSource> _scheduledAlarms = new();
+    /// <summary>
+    /// Audio handler (to be honest i don't really understand how it works
+    /// </summary>
     private readonly IAudioManager _audioManager;
     private IAudioPlayer? _player;
     
+    /// <summary>
+    /// Set the audio manager
+    /// </summary>
     public AlarmScheduler()
     {
         _audioManager = AudioManager.Current;
     }
     
+    /// <summary>
+    /// Launch the task, but we didn't want a Task type
+    /// </summary>
+    /// <param name="alarm"> The alarm we want to Schedule </param>
     public void Schedule(Alarm alarm)
     {
         _ = WaitAndTriggerAsync(alarm);  //_= on previent qu'on s'en fiche du resultat
     }
     
-
+    /// <summary>
+    /// The task that schedule the alarm, wait until it's time and ring for 2s
+    /// It also remove the alarm from the list and set its IsActive to false
+    /// </summary>
+    /// <param name="alarm">The alarm we want to Schedule</param>
     private async Task WaitAndTriggerAsync(Alarm alarm)
     {
         TimeSpan delay = alarm.Date - DateTime.Now;
@@ -41,6 +58,10 @@ public class AlarmScheduler
         
     }
 
+    /// <summary>
+    /// Cancels the alarm waiting and remove it from the list
+    /// </summary>
+    /// <param name="alarm">the alarm to be canceled</param>
     public void Cancel(Alarm alarm)
     {
         if (_scheduledAlarms.TryGetValue(alarm.Id, out var cts))
@@ -51,6 +72,9 @@ public class AlarmScheduler
         }
     }
     
+    /// <summary>
+    /// Play the sound 
+    /// </summary>
     public async Task PlaySoundAsync()
     {
         if (_player == null)
@@ -65,6 +89,9 @@ public class AlarmScheduler
         _player.Play();
     }
 
+    /// <summary>
+    /// Stop the sound
+    /// </summary>
     public void StopSound()
     {
         _player?.Stop();
