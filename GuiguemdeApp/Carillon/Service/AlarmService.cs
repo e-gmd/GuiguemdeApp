@@ -32,7 +32,7 @@ public class AlarmService
     {
         Alarms = new ObservableCollection<Alarm>();
         _filePath = Path.Combine(FileSystem.AppDataDirectory, "alarms.json");                       // c'est comme ça qu'on fait les chemin qui plantent pas les émulateur
-        Process.Start("open", FileSystem.AppDataDirectory);
+        //Process.Start("open", FileSystem.AppDataDirectory);                                       // vers fichier bakup
         _options = new(JsonSerializerDefaults.Web) { WriteIndented = true };
         _= LoadAsync();
         

@@ -9,8 +9,15 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    private async void Carillon_Button_Clicked(object sender, EventArgs e)
+    
+    private void Carillon_Button_Clicked(object sender, EventArgs e)
     {
-        Application.Current!.Windows[0].Page = new CarillonShell();
+        var app = Application.Current;
+
+        if (app is null || app.Windows.Count == 0)
+            return;
+
+        app.Windows[0].Page = new CarillonShell();
     }
+
 }
